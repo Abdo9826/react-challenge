@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 export default function SingleRow({ rowNumber }) {
+  const [disable, setDisbale] = useState(false);
+  const [operatort, setOperator] = useState();
+
+  const [inputnum, setinputnum] = useState('');
+
   const deleteHandler = (e) => {
     e.preventDefault();
     const rowToBeDeleted = e.target.parentElement.id;
@@ -9,16 +14,37 @@ export default function SingleRow({ rowNumber }) {
   };
 
   const options = [
-    { value: '+', label: '+' },
-    { value: '-', label: '-' },
+    { value: 0, label: '+' },
+    { value: 1, label: '-' },
   ];
 
+  const handleDisble = () => {
+    setDisbale(!disable);
+  };
+  const handleSelect = (value) => {
+    setOperator(value.value);
+  };
+  console.log(operatort);
+
+  const handleinput = (e) => {
+    setinputnum(e.target.value);
+  };
+
+  console.log(inputnum);
+
   return (
-    <li id={rowNumber}>
-      <Select className options={options} />
-      <input type='text' value='100' />
+    <li className= "container" id={rowNumber}>
+      <Select className='select' onChange={handleSelect} options={options} setValue={operatort} />
+      <input
+        type='text'
+        onChange={handleinput}
+        disabled={disable ? true : false}
+        value={inputnum}
+      />
       <button onClick={deleteHandler}>Delete</button>
-      <button>Disable</button>
+      <button id={disable ? 'enable' : 'disable'} onClick={handleDisble}>
+        {disable ? 'Enable' : 'Disable'}
+      </button>
     </li>
   );
 }
